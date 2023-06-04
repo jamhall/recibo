@@ -1,0 +1,25 @@
+[package]
+name = "recibo"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.56"
+description = "ESC/POS printer driver for Rust"
+homepage = "https://github.com/jamhall/recibo"
+repository = "https://github.com/jamhall/recibo"
+license = "MIT"
+authors = ["Jamie Hall <hello@jamiehall.eu>"]
+readme = "README.md"
+keywords = ["escpos", "printer", "driver", "thermal", "receipt"]
+
+[features]
+graphics = ["dep:image"]
+
+[dependencies]
+barcoders = "1.0.2"
+byteorder = "1.4.3"
+encoding = "0.2.33"
+log = "0.4.18"
+image = { version = "0.24.6", optional = true }
+
+[dev-dependencies]
+image = { version = "0.24.6", optional = false }
