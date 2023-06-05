@@ -46,7 +46,7 @@ impl Printer {
 
   pub fn linespacing(&mut self, height: u8) -> Result<&mut Self> {
     debug!("linespacing: {}", height);
-    let bytes = self.1.linespacing(height);
+    let bytes = self.1.linespacing(height)?;
     self.0.write(&bytes).map(|_| self)
   }
 
@@ -59,7 +59,7 @@ impl Printer {
   pub fn reset_linespacing(&mut self) -> Result<&mut Self> {
     debug!("resetting linespacing");
     let bytes = self.1.reset_linespacing();
-    self.0.write(&bytes).map(|_| self)
+    self.0.write(bytes).map(|_| self)
   }
 
   pub fn bold(&mut self, enabled: bool) -> Result<&mut Self> {
@@ -70,7 +70,7 @@ impl Printer {
 
   pub fn underline(&mut self, mode: UnderlineMode) -> Result<&mut Self> {
     debug!("Setting underline to {}", mode);
-    let bytes = self.1.underline(&mode);
+    let bytes = self.1.underline(mode);
     self.0.write(bytes).map(|_| self)
   }
 
@@ -146,12 +146,6 @@ impl Printer {
     self.text_size(1, 1)
   }
 
-  pub fn mode(&mut self) -> Result<&mut Self> {
-    debug!("Setting mode to {}", 1);
-    let bytes = self.1.mode()?;
-    self.0.write(&bytes).map(|_| self)
-  }
-
   pub fn flush(&mut self) -> Result<()> {
     self.0.flush()
   }
@@ -172,7 +166,7 @@ impl Printer {
   where
     F: Fn(&mut QrBuilder) -> &mut QrBuilder,
   {
-    let mut builder = Qr::buidler();
+    let mut builder = Qr::builder();
     function(&mut builder);
     let qr = builder.build();
     debug!("Printing qr: {}", qr);
@@ -209,6 +203,10 @@ impl Printer {
     debug!("Setting width to {}", margin);
     let bytes = self.1.width(margin)?;
     self.0.write(&bytes).map(|_| self)
+  }
+
+  pub fn write(&mut self, bytes: &[u8]) -> Result<&mut Self> {
+    self.0.write(bytes).map(|_| self)
   }
 
   pub fn builder() -> PrinterBuilder {

@@ -18,9 +18,7 @@ pub trait Driver {
   fn flush(&self) -> Result<()>;
 }
 
-pub struct NetworkDriver {
-  inner: Rc<RefCell<TcpStream>>,
-}
+pub struct NetworkDriver(Rc<RefCell<TcpStream>>);
 
 #[derive(Default)]
 pub struct ConsoleDriver {}
@@ -51,7 +49,7 @@ impl NetworkDriver {
       debug!("Connecting to address {}:{}", host, port);
       let stream = TcpStream::connect((host, port))?;
       let inner = Rc::new(RefCell::new(stream));
-      Ok(Box::new(NetworkDriver { inner }))
+      Ok(Box::new(NetworkDriver(inner)))
     }
     inner(host.as_ref(), port)
   }
@@ -63,23 +61,21 @@ impl Driver for NetworkDriver {
   }
 
   fn write(&self, data: &[u8]) -> Result<()> {
-    self.inner.borrow_mut().write_all(data).map_err(Into::into)
+    self.0.borrow_mut().write_all(data).map_err(Into::into)
   }
 
   fn flush(&self) -> Result<()> {
-    self.inner.borrow_mut().flush().map_err(Into::into)
+    self.0.borrow_mut().flush().map_err(Into::into)
   }
 }
 
-pub struct FileDriver {
-  file: Rc<RefCell<File>>,
-}
+pub struct FileDriver(Rc<RefCell<File>>);
 
 impl FileDriver {
   pub fn new<P: AsRef<Path>>(path: P) -> Result<Box<Self>> {
     let file = OpenOptions::new().read(true).write(true).open(path)?;
     let file = Rc::new(RefCell::new(file));
-    Ok(Box::new(Self { file }))
+    Ok(Box::new(FileDriver(file)))
   }
 }
 
@@ -89,11 +85,11 @@ impl Driver for FileDriver {
   }
 
   fn write(&self, data: &[u8]) -> Result<()> {
-    self.file.borrow_mut().write_all(data).map_err(Into::into)
+    self.0.borrow_mut().write_all(data).map_err(Into::into)
   }
 
   fn flush(&self) -> Result<()> {
-    self.file.borrow_mut().flush().map_err(Into::into)
+    self.0.borrow_mut().flush().map_err(Into::into)
   }
 }
 

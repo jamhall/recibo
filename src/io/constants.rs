@@ -17,8 +17,6 @@ pub const PAGE_MODE_STANDARD: &[u8] = &[ESC, 0x4C];
 // Paper cut
 pub const PAPER_CUT_FULL: &[u8] = &[GS, 0x56, 0x00];
 pub const PAPER_CUT_PARTIAL: &[u8] = &[GS, 0x56, 0x01];
-pub const PAPER_CUT_PARTIAL_A: &[u8] = &[GS, 0x56, 0x41];
-pub const PAPER_CUT_PARTIAL_B: &[u8] = &[GS, 0x56, 0x42];
 
 // Text styles
 pub const TEXT_BOLD_MODE_OFF: &[u8] = &[ESC, 0x45, 0x00];
@@ -32,14 +30,14 @@ pub const TEXT_FLIP_OFF: &[u8] = &[ESC, 0x7B, 0x00];
 pub const TEXT_FLIP_ON: &[u8] = &[ESC, 0x7B, 0x01];
 pub const TEXT_REVERSE_COLOURS_ON: &[u8] = &[GS, 0x42, 0x01];
 pub const TEXT_REVERSE_COLOURS_OFF: &[u8] = &[GS, 0x42, 0x00];
-
-// Text alignment
 pub const TEXT_JUSTIFY_LEFT: &[u8] = &[ESC, 0x61, 0x00];
 pub const TEXT_JUSTIFY_CENTER: &[u8] = &[ESC, 0x61, 0x01];
 pub const TEXT_JUSTIFY_RIGHT: &[u8] = &[ESC, 0x61, 0x02];
 pub const TEXT_MARGIN_LEFT: &[u8] = &[GS, 0x4C];
 pub const TEXT_PRINTABLE_AREA: &[u8] = &[GS, 0x57];
-
+pub const TEXT_LINESPACING: &[u8] = &[ESC, 0x03];
+pub const TEXT_RESET_LINESPACING: &[u8] = &[ESC, 0x02];
+pub const TEXT_SIZE_SELECT: &[u8] = &[GS, 0x21];
 // Font selection
 pub const FONT_A: &[u8] = &[ESC, 0x4D, 0x00];
 pub const FONT_B: &[u8] = &[ESC, 0x4D, 0x01];

@@ -102,7 +102,7 @@ impl Qr {
     &self.text
   }
 
-  pub fn buidler() -> QrBuilder {
+  pub fn builder() -> QrBuilder {
     QrBuilder::default()
   }
 }

@@ -6,7 +6,6 @@ fn main() -> recibo::Result<()> {
 
   printer.init()?;
 
-  printer.mode()?;
   printer.text("Change height & width")?;
 
   for n in 1..8 {
@@ -16,7 +15,6 @@ fn main() -> recibo::Result<()> {
 
   printer.feed(1)?;
 
-  printer.mode()?;
   printer.text("Change width only (height=4)")?;
 
   for n in 1..8 {
@@ -26,7 +24,6 @@ fn main() -> recibo::Result<()> {
 
   printer.feed(1)?;
 
-  printer.mode()?;
   printer.text("Change height only (width=4)")?;
 
   for n in 1..8 {
@@ -36,7 +33,6 @@ fn main() -> recibo::Result<()> {
 
   printer.feed(1)?;
 
-  printer.mode()?;
   printer.text("Very narrow text")?;
 
   printer.text_size(4, 1)?;
@@ -44,13 +40,11 @@ fn main() -> recibo::Result<()> {
 
   printer.feed(1)?;
 
-  printer.mode()?;
   printer.text("Very wide text")?;
 
   printer.text_size(4, 1)?;
   printer.text("Hello world!")?;
 
-  printer.mode()?;
   printer.text("Largest possible text")?;
 
   printer.text_size(8, 8)?;
