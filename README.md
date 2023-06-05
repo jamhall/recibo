@@ -1,4 +1,4 @@
-# recibo - ESC/POS driver for Rust
+# recibo - ESC/POS driver for Rust [![Build Status]][actions] [![Latest Version]][crates.io]
 
 [Build Status]: https://img.shields.io/github/actions/workflow/status/jamhall/recibo/ci.yml?branch=main
 [actions]: https://github.com/jamhall/recibo/actions?query=branch%3Amain
