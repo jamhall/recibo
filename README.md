@@ -5,8 +5,7 @@
 [Latest Version]: https://img.shields.io/crates/v/recibo.svg
 [crates.io]: https://crates.io/crates/recibo
 
-This project provides an implementation for a subset of Epson's [ESC/POS](https://en.wikipedia.org/wiki/ESC/P) protocol tailored specifically for
-receipt printers.
+This project provides an implementation for a subset of Epson's [ESC/POS](https://en.wikipedia.org/wiki/ESC/P) protocol used by compatible receipt printers.
 It can generate and print receipts that include basic formatting, barcodes, graphics and cutting functions on a compatible
 printer.
 
@@ -73,6 +72,13 @@ If you would like to raster images, you will need to enable the `image` feature:
 ```
 [dependencies]
 recibo = { version = "1.0.0", features = ["graphics"] }
+```
+
+You can also enable deserialisation and serialisation using serde if you enable the feature:
+
+```
+[dependencies]
+recibo = { version = "1.0.0", features = ["serde"] }
 ```
 
 ## Adapters

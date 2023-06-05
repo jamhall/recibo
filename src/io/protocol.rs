@@ -323,7 +323,7 @@ impl Protocol {
             break;
           }
 
-          let is_black = graphic.pixel(x_offset as u32, y as u32).0[0] <= 128;
+          let is_black = graphic.pixel(u32::from(x_offset), u32::from(y)).0[0] <= 128;
 
           // Shift byte to the left, adding the pixel value at the end
           byte = (byte << 1) | u8::from(is_black);
@@ -340,7 +340,7 @@ impl Protocol {
 
 #[cfg(test)]
 mod tests {
-  use crate::{BarcodeTextPosition, Printer};
+  use crate::BarcodeTextPosition;
 
   use super::*;
 
@@ -514,7 +514,7 @@ mod tests {
 
   #[test]
   fn reverse_colours() -> Result<()> {
-    let mut protocol = Protocol::default();
+    let protocol = Protocol::default();
     assert_eq!(
       protocol.reverse_colours(true)?,
       constants::TEXT_REVERSE_COLOURS_ON
@@ -528,7 +528,7 @@ mod tests {
 
   #[test]
   fn test_left() -> Result<()> {
-    let mut protocol = Protocol::default();
+    let protocol = Protocol::default();
     assert_eq!(
       protocol.left(10)?,
       join!(constants::TEXT_MARGIN_LEFT, 0x0A, 0x00)
@@ -542,7 +542,7 @@ mod tests {
 
   #[test]
   fn test_width() -> Result<()> {
-    let mut protocol = Protocol::default();
+    let protocol = Protocol::default();
     assert_eq!(
       protocol.width(10)?,
       join!(constants::TEXT_PRINTABLE_AREA, 0x0A, 0x00)
@@ -620,7 +620,7 @@ mod tests {
   fn test_qr() -> Result<()> {
     let mut protocol = Protocol::default();
     let mut builder = Qr::builder();
-    let qr = builder.text("Hello world");
+    builder.text("Hello world");
 
     let qr = builder.build();
 

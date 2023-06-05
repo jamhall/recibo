@@ -2,10 +2,13 @@ use std::fmt;
 
 use crate::io::constants;
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(PartialEq, Debug, Clone)]
 #[repr(u8)]
 pub enum QrModel {
+  #[cfg_attr(feature = "serde", serde(rename = "model1"))]
   Model1,
+  #[cfg_attr(feature = "serde", serde(rename = "model2"))]
   Model2,
 }
 
@@ -27,12 +30,17 @@ impl From<&QrModel> for u8 {
   }
 }
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(PartialEq, Debug, Clone)]
 #[repr(u8)]
 pub enum QrCorrectionLevel {
+  #[cfg_attr(feature = "serde", serde(rename = "low"))]
   Low,
+  #[cfg_attr(feature = "serde", serde(rename = "medium"))]
   Medium,
+  #[cfg_attr(feature = "serde", serde(rename = "quartile"))]
   Quartile,
+  #[cfg_attr(feature = "serde", serde(rename = "high"))]
   High,
 }
 
@@ -58,7 +66,8 @@ impl From<&QrCorrectionLevel> for u8 {
   }
 }
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(PartialEq, Debug, Clone)]
 pub struct Qr {
   model: QrModel,
   correction_level: QrCorrectionLevel,
@@ -139,5 +148,30 @@ impl QrBuilder {
 
   pub fn build(self) -> Qr {
     self.0
+  }
+}
+
+#[cfg(test)]
+
+mod tests {
+
+  #[test]
+  #[cfg(feature = "serde")]
+  fn test_deserialize_from_json() {
+    let json = r#"
+      {
+        "model": "model1",
+        "correction_level": "medium",
+        "size": 8,
+        "text": "Hello World!"
+      }
+      "#;
+
+    let qr: super::Qr = serde_json::from_str(json).unwrap();
+
+    assert_eq!(qr.model(), &super::QrModel::Model1);
+    assert_eq!(qr.correction_level(), &super::QrCorrectionLevel::Medium);
+    assert_eq!(qr.size(), 8);
+    assert_eq!(qr.text(), "Hello World!");
   }
 }

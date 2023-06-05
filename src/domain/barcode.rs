@@ -1,26 +1,34 @@
 use std::fmt;
 use std::fmt::Formatter;
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(PartialEq, Debug, Clone)]
 pub enum BarcodeSystem {
   /// Universal Product Code (UPC) System A
+  #[cfg_attr(feature = "serde", serde(rename = "upca"))]
   UpcA,
 
   /// Universal Product Code (UPC) System E
+  #[cfg_attr(feature = "serde", serde(rename = "upce"))]
   UpcE,
 
   /// European Article Number (EAN) System 13
+  #[cfg_attr(feature = "serde", serde(rename = "ean13"))]
   Ean13,
 
   /// European Article Number (EAN) System 8
+  #[cfg_attr(feature = "serde", serde(rename = "ean8"))]
   Ean8,
 
   /// Code 39
+  #[cfg_attr(feature = "serde", serde(rename = "code39"))]
   Code39,
 
   /// Interleaved 2 of 5 (ITF)
+  #[cfg_attr(feature = "serde", serde(rename = "itf"))]
   Itf,
 
+  #[cfg_attr(feature = "serde", serde(rename = "codebar"))]
   Codabar,
 }
 
@@ -38,9 +46,12 @@ impl fmt::Display for BarcodeSystem {
   }
 }
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(PartialEq, Debug, Clone)]
 pub enum BarcodeFont {
+  #[cfg_attr(feature = "serde", serde(rename = "a"))]
   A,
+  #[cfg_attr(feature = "serde", serde(rename = "b"))]
   B,
 }
 
@@ -53,12 +64,17 @@ impl fmt::Display for BarcodeFont {
   }
 }
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(PartialEq, Debug, Clone)]
 #[repr(u8)]
 pub enum BarcodeTextPosition {
+  #[cfg_attr(feature = "serde", serde(rename = "none"))]
   None,
+  #[cfg_attr(feature = "serde", serde(rename = "above"))]
   Above,
+  #[cfg_attr(feature = "serde", serde(rename = "below"))]
   Below,
+  #[cfg_attr(feature = "serde", serde(rename = "both"))]
   Both,
 }
 
@@ -84,7 +100,8 @@ impl fmt::Display for BarcodeTextPosition {
   }
 }
 
-#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(PartialEq, Debug, Clone)]
 pub struct Barcode {
   text_position: BarcodeTextPosition,
   system: BarcodeSystem,
@@ -201,5 +218,33 @@ impl BarcodeBuilder {
 
   pub fn build(self) -> Barcode {
     self.0
+  }
+}
+
+#[cfg(test)]
+mod tests {
+
+  #[test]
+  #[cfg(feature = "serde")]
+  fn test_deserialize_from_json() {
+    let json = r#"
+    {
+      "system": "upca",
+      "width": 3,
+      "height": 8,
+      "text": "123456789012",
+      "text_position": "below",
+      "font": "a"
+    }
+    "#;
+
+    let barcode: super::Barcode = serde_json::from_str(json).unwrap();
+
+    assert_eq!(barcode.system(), &super::BarcodeSystem::UpcA);
+    assert_eq!(barcode.width(), 3);
+    assert_eq!(barcode.height(), 8);
+    assert_eq!(barcode.text(), "123456789012");
+    assert_eq!(barcode.text_position(), &super::BarcodeTextPosition::Below);
+    assert_eq!(barcode.font(), &super::BarcodeFont::A);
   }
 }
