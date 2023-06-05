@@ -1,5 +1,10 @@
 # recibo - ESC/POS driver for Rust
 
+[Build Status]: https://img.shields.io/github/actions/workflow/status/jamhall/recibo/ci.yml?branch=main
+[actions]: https://github.com/jamhall/recibo/actions?query=branch%3Amain
+[Latest Version]: https://img.shields.io/crates/v/recibo.svg
+[crates.io]: https://crates.io/crates/recibo
+
 This project provides an implementation for a subset of Epson's [ESC/POS](https://en.wikipedia.org/wiki/ESC/P) protocol tailored specifically for
 receipt printers.
 It can generate and print receipts that include basic formatting, barcodes, graphics and cutting functions on a compatible
